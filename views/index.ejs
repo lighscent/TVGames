@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= title %></title>
-  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/css/output.css?v=<%= boot %>" />
   <link rel="stylesheet" href="/fa/css/all.min.css" />
 </head>
 <body class="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
@@ -38,14 +38,14 @@
       <h2 class="text-sm font-medium uppercase tracking-widest text-zinc-500"><i class="fa-solid fa-trophy mr-1"></i>Meilleurs scores</h2>
       <ol class="mt-2 space-y-2">
         <% scores.global.slice(0, 5).forEach((s, i) => { %>
-          <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm text-zinc-400"><%= s.wins %>V · <%= s.draws %>N · <%= s.losses %>D</span></li>
+          <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm"><span class="font-bold text-emerald-400"><%= s.wins %></span><span class="text-zinc-400"> / <%= s.draws %> / </span><span class="text-red-400"><%= s.losses %></span></span></li>
         <% }) %>
       </ol>
       <% Object.keys(scores.byGame).forEach(gid => { const g = games.find(x => x.id === gid); %>
         <h3 class="mt-4 text-xs font-medium uppercase tracking-widest text-zinc-500"><%= g ? g.name : gid %></h3>
         <ol class="mt-2 space-y-2">
           <% scores.byGame[gid].slice(0, 3).forEach((s, i) => { %>
-            <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm text-zinc-400"><%= s.wins %>V · <%= s.draws %>N · <%= s.losses %>D</span></li>
+            <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm"><span class="font-bold text-emerald-400"><%= s.wins %></span><span class="text-zinc-400"> / <%= s.draws %> / </span><span class="text-red-400"><%= s.losses %></span></span></li>
           <% }) %>
         </ol>
       <% }) %>

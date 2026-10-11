@@ -7,6 +7,7 @@ const log = require('./lib/logger');
 
 const { GAMES } = require('./lib/games');
 const { setupWebSocket } = require('./lib/ws');
+const { BOOT_ID } = require('./lib/ws/state');
 const db = require('./lib/db');
 
 const app = express();
@@ -32,11 +33,11 @@ app.use(express.json());
 app.get('/', (req, res) => {
   let scores = { global: [], byGame: {} };
   try { scores = db.getScores(); } catch (e) { log.error(e); }
-  res.render('index', { title: 'TVGames', games: GAMES, scores });
+  res.render('index', { title: 'TVGames', games: GAMES, scores, boot: BOOT_ID });
 });
 
 app.get('/tv', (req, res) => {
-  res.render('tv', { title: 'TVGames · TV', room: '', joinUrl: '', qrDataUrl: '', games: GAMES });
+  res.render('tv', { title: 'TVGames · TV', room: '', joinUrl: '', qrDataUrl: '', games: GAMES, boot: BOOT_ID });
 });
 
 function renderController(title) {
@@ -45,6 +46,7 @@ function renderController(title) {
       title,
       room: String(req.query.room || '').toUpperCase().slice(0, 8),
       games: GAMES,
+      boot: BOOT_ID,
     });
   };
 }

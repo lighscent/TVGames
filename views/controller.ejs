@@ -4,11 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title><%= title %></title>
-  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/css/output.css?v=<%= boot %>" />
   <link rel="stylesheet" href="/fa/css/all.min.css" />
   <style>
     @keyframes c4-fall { from { transform: translateY(var(--fall, -100%)); } to { transform: translateY(0); } }
     .c4-drop { animation: c4-fall 0.45s ease-in; }
+    @keyframes memo-flip { from { transform: rotateY(90deg) scale(0.9); } to { transform: rotateY(0) scale(1); } }
+    .memo-flip { animation: memo-flip 0.35s ease-out; }
+    @keyframes memo-unflip { from { transform: rotateY(0) scale(1); } to { transform: rotateY(90deg) scale(0.9); } }
+    .memo-unflip { animation: memo-unflip 0.3s ease-in; }
   </style>
 </head>
 <body class="flex h-dvh flex-col overflow-hidden overscroll-none bg-zinc-950 text-zinc-100 antialiased">
@@ -63,7 +67,7 @@
         <button class="btn-leave rounded-lg border border-zinc-700 px-3 py-1 text-xs text-zinc-400">Quitter</button>
       </div>
       <p class="mt-1 shrink-0 text-xs text-zinc-500">Jeu : <span id="game-label" class="font-medium text-zinc-300"></span></p>
-      <div id="controls" class="flex min-h-0 flex-1 flex-col items-center justify-center gap-[2vmin] overflow-hidden py-2"></div>
+      <div id="controls" class="flex min-h-0 flex-1 flex-col items-center justify-center-safe gap-[2vmin] overflow-y-auto py-2"></div>
     </section>
   </main>
   <div id="end-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-6">
@@ -73,8 +77,8 @@
     <div id="rematch-modal-card" class="w-full max-w-sm rounded-2xl border border-zinc-700 bg-zinc-900 p-5 text-center"></div>
   </div>
   <script>
-    window.__CTRL_INIT__ = { room: "<%= room %>", games: <%- JSON.stringify(games) %> };
+    window.__CTRL_INIT__ = { room: "<%= room %>", games: <%- JSON.stringify(games) %>, boot: "<%= boot %>" };
   </script>
-  <script src="/js/controller.js"></script>
+  <script type="module" src="/js/controller/main.js?v=<%= boot %>"></script>
 </body>
 </html>
