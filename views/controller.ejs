@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/fa/css/all.min.css" />
+  <style>
+    @keyframes c4-fall { from { transform: translateY(var(--fall, -100%)); } to { transform: translateY(0); } }
+    .c4-drop { animation: c4-fall 0.45s ease-in; }
+  </style>
+</head>
+<body class="flex h-dvh flex-col overflow-hidden overscroll-none bg-zinc-950 text-zinc-100 antialiased">
+  <main class="mx-auto flex h-full w-full max-w-md flex-col px-4 py-3">
+    <header class="flex items-center justify-between">
+      <p class="text-sm uppercase tracking-widest text-zinc-500">TVGames · Manette</p>
+      <p class="text-xs"><span id="ws-dot" class="mr-1 inline-block h-2 w-2 rounded-full bg-amber-400"></span><span id="ws-status" class="text-zinc-400">connexion…</span></p>
+    </header>
+
+    <section id="join-screen" class="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/40 p-5">
+      <h1 class="text-2xl font-bold">Rejoindre une partie</h1>
+      <label class="mt-4 block text-sm text-zinc-400">Pseudo
+        <input id="input-name" type="text" maxlength="20" placeholder="Ex. Alex" list="name-history" autocomplete="off"
+          class="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 text-base text-white outline-none focus:border-sky-500" />
+        <datalist id="name-history"></datalist>
+      </label>
+      <label class="mt-3 block text-sm text-zinc-400">Code du salon
+        <input id="input-room" type="text" maxlength="8" placeholder="ABCD" value="<%= room %>"
+          class="mt-1 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-4 py-3 font-mono text-base uppercase tracking-widest text-white outline-none focus:border-sky-500" />
+      </label>
+      <button id="btn-join"
+        class="mt-4 w-full rounded-xl bg-sky-500 px-4 py-3 text-base font-bold text-white active:bg-sky-400">
+        Rejoindre
+      </button>
+      <button id="btn-create"
+        class="mt-2 w-full rounded-xl border border-sky-500 px-4 py-3 text-base font-bold text-sky-300 active:bg-sky-950">
+        <i class="fa-solid fa-plus mr-1"></i>Créer un salon
+      </button>
+      <p id="join-error" class="mt-2 hidden text-sm text-red-400"></p>
+      <div class="mt-4 border-t border-zinc-800 pt-3">
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-bold text-zinc-300"><i class="fa-solid fa-magnifying-glass mr-1"></i>Salons détectés</p>
+          <button id="btn-refresh-rooms" class="rounded-lg border border-zinc-700 px-2 py-1 text-xs text-zinc-400"><i class="fa-solid fa-rotate-right"></i></button>
+        </div>
+        <div id="rooms-list" class="mt-2 max-h-[24vh] space-y-2 overflow-y-auto">
+          <p class="text-xs text-zinc-500">Recherche…</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="lobby-screen" class="hidden min-h-0 flex-1 flex-col">
+      <div class="flex shrink-0 items-center justify-between text-xs">
+        <p>Salon <span id="lobby-room" class="font-mono font-bold text-sky-400"></span></p>
+        <button class="btn-leave rounded-lg border border-zinc-700 px-3 py-1 text-xs text-zinc-400">Quitter</button>
+      </div>
+      <div id="lobby-content" class="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto py-2"></div>
+    </section>
+
+    <section id="game-screen" class="relative hidden min-h-0 flex-1 flex-col">
+      <div class="flex shrink-0 items-center justify-between text-xs">
+        <p><button data-nav="/controller/game" class="font-bold text-sky-400">‹ Salon</button> · <span id="room-label" class="font-mono font-bold text-sky-400"></span> · <span id="name-label" class="font-medium"></span></p>
+        <button class="btn-leave rounded-lg border border-zinc-700 px-3 py-1 text-xs text-zinc-400">Quitter</button>
+      </div>
+      <p class="mt-1 shrink-0 text-xs text-zinc-500">Jeu : <span id="game-label" class="font-medium text-zinc-300"></span></p>
+      <div id="controls" class="flex min-h-0 flex-1 flex-col items-center justify-center gap-[2vmin] overflow-hidden py-2"></div>
+    </section>
+  </main>
+  <div id="end-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-6">
+    <div id="end-modal-card" class="w-full max-w-sm rounded-2xl border border-zinc-700 bg-zinc-900 p-5 text-center"></div>
+  </div>
+  <div id="rematch-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 p-6">
+    <div id="rematch-modal-card" class="w-full max-w-sm rounded-2xl border border-zinc-700 bg-zinc-900 p-5 text-center"></div>
+  </div>
+  <script>
+    window.__CTRL_INIT__ = { room: "<%= room %>", games: <%- JSON.stringify(games) %> };
+  </script>
+  <script src="/js/controller.js"></script>
+</body>
+</html>

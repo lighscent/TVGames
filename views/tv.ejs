@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/fa/css/all.min.css" />
+  <style>
+    @keyframes c4-fall { from { transform: translateY(var(--fall, -100%)); } to { transform: translateY(0); } }
+    .c4-drop { animation: c4-fall 0.45s ease-in; }
+  </style>
+</head>
+<body class="flex h-screen flex-col overflow-hidden bg-zinc-950 text-zinc-100 antialiased">
+  <header class="flex shrink-0 items-center justify-between gap-4 px-5 py-2">
+    <div class="flex items-center gap-5">
+      <div>
+        <p class="text-[1.6vmin] uppercase tracking-widest text-zinc-500">TVGames · TV</p>
+        <p class="font-mono text-[3.4vmin] font-black leading-none tracking-[0.3em] text-sky-400"><span id="room-code"><%= room %></span></p>
+      </div>
+      <div class="text-[1.9vmin] text-zinc-400">
+        <p class="font-bold text-zinc-100"><span id="current-game">—</span></p>
+        <p>Gérant : <span id="host-name" class="font-medium text-amber-300">—</span> · <span id="player-count" class="font-bold text-white">0</span> joueur(s) · <span id="ws-status" class="text-amber-400">connexion…</span></p>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <p class="break-all font-mono text-[1.6vmin] text-sky-300"><%= joinUrl %></p>
+      <% if (typeof qrDataUrl !== 'undefined' && qrDataUrl) { %>
+        <img
+          src="<%= qrDataUrl %>"
+          alt="QR pour rejoindre"
+          class="h-[9vmin] w-[9vmin] rounded-lg border border-zinc-800 bg-white p-1"
+        />
+      <% } %>
+      <a href="/tv" class="rounded-lg border border-zinc-700 px-3 py-1 text-[1.8vmin] hover:bg-zinc-900">Nouveau salon</a>
+    </div>
+  </header>
+
+  <main id="stage" class="flex min-h-0 flex-1 items-center justify-center p-4 text-center">
+    <p class="text-zinc-500">Chargement…</p>
+  </main>
+
+  <footer class="shrink-0 px-5 py-2">
+    <div id="players" class="flex flex-wrap gap-2"></div>
+  </footer>
+  <script>
+    window.__TV_INIT__ = { room: "<%= room %>", games: <%- JSON.stringify(games) %>, qr: "<%= (typeof qrDataUrl !== 'undefined' && qrDataUrl) ? qrDataUrl : '' %>" };
+  </script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>

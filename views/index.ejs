@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/output.css" />
+  <link rel="stylesheet" href="/fa/css/all.min.css" />
+</head>
+<body class="min-h-screen bg-zinc-950 text-zinc-100 antialiased">
+  <main class="mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center px-6 py-12 text-center">
+    <p class="text-sm uppercase tracking-widest text-zinc-500">TVGames</p>
+    <h1 class="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
+      Jouez sur la <span class="text-sky-400">TV</span>, contrôlez avec le <span class="text-emerald-400">mobile</span>
+    </h1>
+    <div class="mt-8 grid w-full gap-3 sm:grid-cols-2">
+      <a href="/tv" class="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-sky-600">
+        <p class="text-3xl"><i class="fa-solid fa-tv"></i></p>
+        <p class="mt-2 text-lg font-bold">Écran TV</p>
+        <p class="text-sm text-zinc-400">Affiche le jeu, le code salon et le QR.</p>
+      </a>
+      <a href="/controller" class="rounded-2xl border border-zinc-800 bg-zinc-900/40 p-6 hover:border-emerald-600">
+        <p class="text-3xl"><i class="fa-solid fa-mobile-screen-button"></i></p>
+        <p class="mt-2 text-lg font-bold">Manette mobile</p>
+        <p class="text-sm text-zinc-400">Crée un salon et choisis la TV.</p>
+      </a>
+    </div>
+    <div class="mt-8 w-full text-left">
+      <h2 class="text-sm font-medium uppercase tracking-widest text-zinc-500">Jeux disponibles</h2>
+      <ul class="mt-2 space-y-2">
+        <% games.forEach(g => { %>
+          <li class="rounded-xl border border-zinc-800 px-4 py-3"><i class="mr-2 <%= g.icon %>"></i><strong><%= g.name %></strong> <span class="text-sm text-zinc-400">— <%= g.description %></span></li>
+        <% }) %>
+      </ul>
+    </div>
+    <% if (scores.global.length) { %>
+    <div class="mt-8 w-full text-left">
+      <h2 class="text-sm font-medium uppercase tracking-widest text-zinc-500"><i class="fa-solid fa-trophy mr-1"></i>Meilleurs scores</h2>
+      <ol class="mt-2 space-y-2">
+        <% scores.global.slice(0, 5).forEach((s, i) => { %>
+          <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm text-zinc-400"><%= s.wins %>V · <%= s.draws %>N · <%= s.losses %>D</span></li>
+        <% }) %>
+      </ol>
+      <% Object.keys(scores.byGame).forEach(gid => { const g = games.find(x => x.id === gid); %>
+        <h3 class="mt-4 text-xs font-medium uppercase tracking-widest text-zinc-500"><%= g ? g.name : gid %></h3>
+        <ol class="mt-2 space-y-2">
+          <% scores.byGame[gid].slice(0, 3).forEach((s, i) => { %>
+            <li class="flex items-center justify-between rounded-xl border border-zinc-800 px-4 py-2"><span><strong class="text-amber-300"><%= i + 1 %>.</strong> <%= s.name %></span><span class="text-sm text-zinc-400"><%= s.wins %>V · <%= s.draws %>N · <%= s.losses %>D</span></li>
+          <% }) %>
+        </ol>
+      <% }) %>
+    </div>
+    <% } %>
+    <p class="mt-8 text-xs text-zinc-600">1. Ouvre /tv → 2. Crée un salon depuis un mobile et choisis la TV → 3. Le joueur 2 scanne le QR sur la TV.</p>
+  </main>
+</body>
+</html>
